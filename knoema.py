@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 
 from utils import *
 
+
 BASE_URL = "https://knoema.com/atlas/"
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
@@ -33,11 +34,7 @@ class Country(object):
                 key, val = li.text.split(':')[0], ':'.join(li.text.split(':')[1:])
                 redunc = ['\n','\t','\r']
                 self.info[dropc(key, redunc)] = dropc(val, redunc)
-        
-        self.client_id = soup.find('input', {'id': 'systemClientId'}).attrs['value']
-        self.payload_data = {"Dataset":"IMFWEO2019APR","Header":[{"FilterText":"null","DimensionId":"Time","Members":["1980","1981","1982","1983","1984","1985","1986","1987","1988","1989","1990","1991","1992","1993","1994","1995","1996","1997","1998","1999","2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018"]}],"Stub":[{"FilterText":"null","DimensionId":"subject","Members":["1000010"]},{"FilterText": "null","DimensionId":"country","Members":["1001850"]}],"Filter":[],"Frequencies":["A"],"RegionIdsRequired":"false","RegionDimensionId":"null"}
-        self.payload_headers = {'Content-Type': 'application/json'}
-
+    
     def fetch_data(self, indicator_name, mod=1):
         """fetch time series data of given indicator.
 
@@ -50,11 +47,11 @@ class Country(object):
             (list dict) 
             ie. [{'time': '2000', 'val': 100}, {'time': '2001', 'val': 101}]
         """
-        if mod == 0:
-            target_url = "{0}/{1}/{2}".format(BASE_URL, self.country_name, indicator_name)
-            html = SESS.get(target_url).text
-            soup = BeautifulSoup(html, 'lxml')
+        target_url = "{0}/{1}/{2}".format(BASE_URL, self.country_name, indicator_name)
+        html = SESS.get(target_url).text
+        soup = BeautifulSoup(html, 'lxml')
 
+        if mod == 0:
             table = soup.find('table', {'class': 'knoema-table'})
             data = load_table(table)
             unit = soup.find('span', {'class': 'italic'}).text[1:-1]
@@ -63,8 +60,11 @@ class Country(object):
                 val_item['Value'] = parse_num(val_item['Value'])
 
         elif mod == 1:
-            post_url = "https://knoema.com/api/1.0/data/pivot?reportErrorType=true&client_id=%s" %(self.client_id)
-            res = SESS.post(post_url, data=json.dumps(self.payload_data), headers=self.payload_headers)
+            payload_data = soup.find('input', {'name': 'datadescriptor'}).attrs['value']
+            payload_headers = {'Content-Type': 'application/json'}
+            client_id = soup.find('input', {'id': 'systemClientId'}).attrs['value']    
+            post_url = "https://knoema.com/api/1.0/data/pivot?reportErrorType=true&client_id=%s" %(client_id)
+            res = SESS.post(post_url, data=payload_data, headers=payload_headers)
             data = json.loads(res.text)['data']
 
         return data
@@ -76,19 +76,27 @@ class Country(object):
             indicator_name: (str) name of indicator
             year: (str/int) specific year
         return:
-            (dict) ie. {'time': '2000', 'val': 100}
+            (list dict) ie. [{'time': '2000', 'val': 100}]
         """
-        self.payload_data['Header'][0]['Members'] = [str(year)]
-        post_url = "https://knoema.com/api/1.0/data/pivot?reportErrorType=true&client_id=%s" %(self.client_id)
-        res = SESS.post(post_url, data=json.dumps(self.payload_data), headers=self.payload_headers)
-        data_dict = json.loads(res.text)['data'][0]
-        return data_dict
+        target_url = "{0}/{1}/{2}".format(BASE_URL, self.country_name, indicator_name)
+        html = SESS.get(target_url).text
+        soup = BeautifulSoup(html, 'lxml')
+
+        payload_data = json.loads(soup.find('input', {'name': 'datadescriptor'}).attrs['value'])
+        payload_data['Header'][0]['Members'] = [str(year)]
+
+        payload_headers = {'Content-Type': 'application/json'}
+        client_id = soup.find('input', {'id': 'systemClientId'}).attrs['value']
+        post_url = "https://knoema.com/api/1.0/data/pivot?reportErrorType=true&client_id=%s" %(client_id)
+        res = SESS.post(post_url, data=json.dumps(payload_data), headers=payload_headers)
+        data = json.loads(res.text)['data']
+        return data
 
 
 if __name__=="__main__":
-    count = countries[15]
-    indic = indicators[15]
+    count = countries[15]['name']
+    indic = indicators[1]['name']
     print(count, indic)
-    CN = Country('China')
-    pprint(CN.fetch_data(indic))
-    pprint(CN.query(indic, 2003))
+    CN = Country(count)
+    # pprint(CN.fetch_data(indic))
+    pprint(CN.query(indic, 2017))
