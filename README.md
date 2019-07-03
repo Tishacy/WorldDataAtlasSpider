@@ -53,6 +53,76 @@
 
 ## Usage
 
+### Quick start
+
+获取美国的GDP数据。
+
+1. 在仓库主目录下新建python文件或打开IPython console。
+
+2. 导入`knoema`模块。
+
+  ```python
+  from knoema.knoema import Country
+  from knoema.utils import *
+  ```
+
+3. 创建Country对象。
+
+   ```python
+   US = Country('USA')
+   # 或者使用国家/地区全称
+   # US = Country('United-States-of-America')
+   ```
+
+4. 获取美国往年GDP数据。
+
+    ```python
+    US.fetch_data('GDP')
+    ```
+
+    得到：
+
+    ```json
+    [{'Indicator': 'GDP',
+      'Time': '1980-01-01T00:00:00Z',
+      'Value': 2857.33,
+      'Unit': 'U.S. dollars, Billions',
+      'RegionId': 'US',
+      'country': 'United States'},
+     {'Indicator': 'GDP',
+      'Time': '1981-01-01T00:00:00Z',
+      'Value': 3207.03,
+      'Unit': 'U.S. dollars, Billions',
+      'RegionId': 'US',
+      'country': 'United States'},
+        ...
+     {'Indicator': 'GDP',
+      'Time': '2018-01-01T00:00:00Z',
+      'Value': 20494.05,
+      'Unit': 'U.S. dollars, Billions',
+      'RegionId': 'US',
+      'country': 'United States'}]
+    ```
+
+5. 获取2015年美国GDP数据。
+
+   ```python
+   US.query('GDP', '2015')
+   ```
+
+   得到：
+
+   ```json
+   [{'Time': '2015-01-01T00:00:00Z',
+     'country': 'United States',
+     'RegionId': 'US',
+     'subject': 'Gross domestic product, current prices (U.S. dollars)',
+     'Frequency': 'A',
+     'Value': 18219.3,
+     'Unit': 'U.S. dollars, Billions',
+     'Scale': 1}]
+   ```
+
 ### 运行demo
 
 `demo.py`：获取中国和美国的GDP数据并绘制图像。
