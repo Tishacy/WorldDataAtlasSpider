@@ -5,14 +5,20 @@
 from bs4 import BeautifulSoup
 from pprint import pprint
 import pandas as pd
-import json
+import json, os
+
+
+def get_resource_path(path):
+    dir_path = os.path.dirname(__file__)
+    dir_path = dir_path if dir_path else os.getcwd()
+    return os.path.join(dir_path, path)
 
 # List of countries
-with open('./source_data/countries.json', 'r', encoding='utf-8') as f:
+with open(get_resource_path('./source_data/countries.json'), 'r', encoding='utf-8') as f:
     countries = [json.loads(line[:-1]) for line in f.readlines()]
 
 # List of indicators
-with open('./source_data/indicators.json', 'r', encoding='utf-8') as f:
+with open(get_resource_path('./source_data/indicators.json'), 'r', encoding='utf-8') as f:
     indicators = [json.loads(line[:-1]) for line in f.readlines()]
 
 

@@ -5,7 +5,7 @@
 import requests, re, os, json
 from bs4 import BeautifulSoup
 
-from utils import *
+from .utils import *
 
 
 BASE_URL = "https://knoema.com/atlas/"

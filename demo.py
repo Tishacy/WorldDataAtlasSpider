@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from knoema import Country
-from utils import *
+from knoema.knoema import Country
+from knoema.utils import *
 
 
 # Fetch data
@@ -20,8 +20,8 @@ print('已获取数据')
 fig = plt.figure(figsize=(8, 4.5))
 frm = int(CN_data[0]['Time'][:4])
 
-plt.plot(np.arange(frm, frm + len(CN_data)), 'Value', '-o', color='r', data=CN_df, label='CN')
-plt.plot(np.arange(frm, frm + len(USA_data)), 'Value', '-o', color='k', data=USA_df, label='USA')
+plt.plot(np.arange(frm, frm + len(CN_data)), 'Value', '-', color='r', data=CN_df, label='CN')
+plt.plot(np.arange(frm, frm + len(USA_data)), 'Value', '-', color='k', data=USA_df, label='USA')
 plt.xlabel('Time (a)', fontsize=14)
 plt.ylabel('{0} ({1})'.format(INDIC, CN_data[0]['Unit']), fontsize=14)
 plt.title('Comparison of %s between USA and CN' %(INDIC), fontsize=15)
