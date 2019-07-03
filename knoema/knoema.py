@@ -54,19 +54,37 @@ class Country(object):
 
         if mod == 0:
             table = soup.find('table', {'class': 'knoema-table'})
+            if not table:
+                # 没有该指标数据
+                return []
             data = load_table(table)
             unit = soup.find('span', {'class': 'italic'}).text[1:-1]
             for val_item in data:
-                val_item['unit'] = unit
+                val_item['Indicator'] = indicator_name
+                val_item['Unit'] = unit
                 val_item['Value'] = parse_num(val_item['Value'])
 
         elif mod == 1:
-            payload_data = soup.find('input', {'name': 'datadescriptor'}).attrs['value']
+            payload_data_tag = soup.find('input', {'name': 'datadescriptor'})
+            if not payload_data_tag:
+                # 没有该指标数据
+                return []
+            payload_data = payload_data_tag.attrs['value']
             payload_headers = {'Content-Type': 'application/json'}
             client_id = soup.find('input', {'id': 'systemClientId'}).attrs['value']    
             post_url = "https://knoema.com/api/1.0/data/pivot?reportErrorType=true&client_id=%s" %(client_id)
             res = SESS.post(post_url, data=payload_data, headers=payload_headers)
-            data = json.loads(res.text)['data']
+            res_data = json.loads(res.text)['data']
+            data = []
+            for data_item in res_data:
+                item = {}
+                item['Indicator'] = indicator_name
+                item['Time'] = data_item['Time']
+                item['Value'] = data_item['Value']
+                item['Unit'] = data_item['Unit']
+                item['RegionId'] = data_item['RegionId']
+                item['country'] = data_item['country']
+                data.append(item)
 
         return data
     

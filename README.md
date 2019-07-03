@@ -31,7 +31,7 @@
 1. 克隆至本地。
 
     ```bash
-    $ git clone https://github.com/Tishacy/WorldDataAtlas
+    $ git clone https://github.com/Tishacy/WorldDataAtlas.git
     $ cd WorldDataAtlas
     ```
 
@@ -55,7 +55,7 @@
 
 ### 运行demo
 
-`demo.py`：获取中国和美国的人口数据并绘制图像。
+`demo.py`：获取中国和美国的GDP数据并绘制图像。
 
 ```bash
 $ python3 demo.py

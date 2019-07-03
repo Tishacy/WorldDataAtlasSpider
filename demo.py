@@ -10,7 +10,7 @@ from knoema.utils import *
 
 
 # Fetch data
-INDIC = 'Population'
+INDIC = 'GDP'
 CN, USA = Country('China'), Country('USA')
 CN_data, USA_data = CN.fetch_data(INDIC), USA.fetch_data(INDIC)
 CN_df, USA_df = pd.DataFrame(CN_data), pd.DataFrame(USA_data)
@@ -26,6 +26,7 @@ plt.xlabel('Time (a)', fontsize=14)
 plt.ylabel('{0} ({1})'.format(INDIC, CN_data[0]['Unit']), fontsize=14)
 plt.title('Comparison of %s between USA and CN' %(INDIC), fontsize=15)
 plt.legend(fontsize=12)
+plt.grid(True)
 fig.autofmt_xdate()
 
 plt.show()

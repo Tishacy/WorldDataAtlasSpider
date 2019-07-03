@@ -71,3 +71,10 @@ def get_id_by_indic(indic_name):
     for indic in indicators:
         if indic['name'] == indic_name:
             return indic['id']
+
+def load_data_file_to_dataframe(fpath):
+    """load data file (json) to pd.DataFrame.
+    """
+    with open(fpath, 'r', encoding='utf-8') as f:
+        data = [json.loads(line[:-1]) for line in f.readlines()]
+    return pd.DataFrame(data)
