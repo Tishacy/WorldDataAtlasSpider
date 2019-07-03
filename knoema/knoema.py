@@ -4,6 +4,7 @@
 
 import requests, re, os, json
 from bs4 import BeautifulSoup
+from mspider.spider import MSpider
 
 from .utils import *
 
@@ -93,10 +94,70 @@ class Country(object):
         return data
 
 
+def fetch_indicator_of_all_countries(indicator_name, out_path=''):
+    """多线程爬虫爬取所有国家/地区的某指标数据
+    """
+    if not out_path:
+        out_path = './%s_of_all_countries.json' %(indicator_name)
+
+    class IndicSpider(MSpider):
+        def __init__(self, indicator_name):
+            self.source = countries
+            self.indicator = indicator_name
+            self.file = open(out_path, 'w', encoding='utf-8')
+            super(IndicSpider, self).__init__(self.basic_func, self.source)
+
+        def basic_func(self, index, country):
+            data = Country(country['name']).fetch_data(self.indicator)
+            for item in data:
+                self.save_item(item)
+        
+        def save_item(self, item):
+            content = json.dumps(item, ensure_ascii=False) + '\n'
+            self.file.write(content)
+            self.file.flush()
+    
+    # IndicSpider(indicator_name).test()
+    IndicSpider(indicator_name).crawl()
+
+
+def fetch_all_indicators_of_country(country_name, out_path=''):
+    """多线程爬虫爬取某国家/地区的所有指标数据
+    """
+    if not out_path:
+        out_path = './all_indicators_of_%s.json' %(country_name)
+
+    class CountSpider(MSpider):
+        def __init__(self, country_name):
+            self.source = indicators
+            self.country = Country(country_name)
+            self.file = open(out_path, 'w', encoding='utf-8')
+            super(CountSpider, self).__init__(self.basic_func, self.source)
+
+        def basic_func(self, index, indicator):
+            data = self.country.fetch_data(indicator['name'])
+            for item in data:
+                self.save_item(item)
+        
+        def save_item(self, item):
+            content = json.dumps(item, ensure_ascii=False) + '\n'
+            self.file.write(content)
+            self.file.flush()
+    
+    # CountSpider(country_name).test()
+    CountSpider(country_name).crawl()
+
+
 if __name__=="__main__":
-    count = countries[15]['name']
-    indic = indicators[1]['name']
-    print(count, indic)
-    CN = Country(count)
-    # pprint(CN.fetch_data(indic))
-    pprint(CN.query(indic, 2017))
+    # count = countries[115]['name']
+    # indic = indicators[12]['name']
+    # print(count, indic)
+    # CN = Country(count)
+
+    # 查询
+    # pprint(CN.fetch_data(indic, mod=0))
+    # pprint(CN.query(indic, 2000))
+
+    # 多线程爬取数据
+    # fetch_indicator_of_all_countries('GDP')
+    fetch_all_indicators_of_country('China')
