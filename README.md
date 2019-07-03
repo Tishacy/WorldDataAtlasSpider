@@ -61,10 +61,10 @@
 
 2. 导入`knoema`模块。
 
-  ```python
-  from knoema.knoema import Country
-  from knoema.utils import *
-  ```
+   ```python
+   from knoema.knoema import Country
+   from knoema.utils import *
+   ```
 
 3. 创建Country对象。
 
@@ -82,7 +82,7 @@
 
     得到：
 
-    ```json
+    ```python
     [{'Indicator': 'GDP',
       'Time': '1980-01-01T00:00:00Z',
       'Value': 2857.33,
@@ -112,7 +112,7 @@
 
    得到：
 
-   ```json
+   ```python
    [{'Time': '2015-01-01T00:00:00Z',
      'country': 'United States',
      'RegionId': 'US',
