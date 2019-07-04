@@ -2,8 +2,8 @@
 
 通过 [Knoema](https://knoema.com/atlas) 获取 **某国家/地区** 的 **某指标** 的 **不同年份** 的数据。
 
-- 可获取数据的国家/地区见 [`./knoema/source_data/countries.json`](https://github.com/Tishacy/WorldDataAtlas/blob/master/knoema/source_data/countries.json)。
-- 可获取数据的指标见[`./knoema/source_data/indicators.json`](https://github.com/Tishacy/WorldDataAtlas/blob/master/knoema/source_data/indicators.json)。
+- 可获取数据的国家/地区见 [`./knoema/source_data/countries.json`](https://github.com/Tishacy/WorldDataAtlasSpider/blob/master/knoema/source_data/countries.json)。
+- 可获取数据的指标见[`./knoema/source_data/indicators.json`](https://github.com/Tishacy/WorldDataAtlasSpider/blob/master/knoema/source_data/indicators.json)。
 
 目录树如下：
 
@@ -31,7 +31,7 @@
 1. 克隆至本地。
 
     ```bash
-    $ git clone https://github.com/Tishacy/WorldDataAtlas.git
+    $ git clone https://github.com/Tishacy/WorldDataAtlasSpider.git
     $ cd WorldDataAtlas
     ```
 
@@ -137,7 +137,7 @@ $ python3 demo.py
 
 ### 具体用法
 
-**见[`handbook.ipynb`](http://nbviewer.jupyter.org/github/Tishacy/WorldDataAtlas/blob/master/handbook.ipynb)。**
+**见[`handbook.ipynb`](http://nbviewer.jupyter.org/github/Tishacy/WorldDataAtlasSpider/blob/master/handbook.ipynb)。**
 
 
 
@@ -145,4 +145,4 @@ $ python3 demo.py
 
 Copyright (c) 2019 tishacy.
 
-Licensed under the [MIT License](https://github.com/Tishacy/WorldDataAtlas/blob/master/LICENSE).
+Licensed under the [MIT License](https://github.com/Tishacy/WorldDataAtlasSpider/blob/master/LICENSE).
