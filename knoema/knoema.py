@@ -167,15 +167,15 @@ def fetch_all_indicators_of_country(country_name, out_path=''):
 
 
 if __name__=="__main__":
-    # count = countries[115]['name']
-    # indic = indicators[12]['name']
-    # print(count, indic)
-    # CN = Country(count)
+    count = countries[115]['name']
+    indic = indicators[12]['name']
+    print(count, indic)
+    CN = Country(count)
 
     # 查询
-    # pprint(CN.fetch_data(indic, mod=0))
-    # pprint(CN.query(indic, 2000))
+    pprint(CN.fetch_data(indic, mod=0))
+    pprint(CN.query(indic, 2000))
 
     # 多线程爬取数据
     # fetch_indicator_of_all_countries('GDP')
-    fetch_all_indicators_of_country('China')
+    # fetch_all_indicators_of_country('China')
