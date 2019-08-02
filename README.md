@@ -1,6 +1,8 @@
 # World Data Atlas (Knoema) Spider
 
-通过 [Knoema](https://knoema.com/atlas) 获取 **某国家/地区** 的 **某指标** 的 **不同年份** 的数据。
+（Unofficial API）通过 [Knoema](https://knoema.com/atlas) 获取 **某国家/地区** 的 **某指标** 的 **不同年份** 的数据。
+
+**[戳这里看使用示例](http://nbviewer.jupyter.org/github/Tishacy/WorldDataAtlasSpider/blob/master/handbook.ipynb)**
 
 - 可获取数据的国家/地区见 [`./knoema/source_data/countries.json`](https://github.com/Tishacy/WorldDataAtlasSpider/blob/master/knoema/source_data/countries.json)。
 - 可获取数据的指标见[`./knoema/source_data/indicators.json`](https://github.com/Tishacy/WorldDataAtlasSpider/blob/master/knoema/source_data/indicators.json)。
@@ -134,11 +136,6 @@ $ python3 demo.py
 若见下图，则运行成功。
 
 ![Figure of demo](./demo.png)
-
-### 具体用法
-
-**见[`handbook.ipynb`](http://nbviewer.jupyter.org/github/Tishacy/WorldDataAtlasSpider/blob/master/handbook.ipynb)。**
-
 
 
 ## License
